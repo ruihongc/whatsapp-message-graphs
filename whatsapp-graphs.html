@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WhatsApp Chat Stats</title>
+		<meta charset=utf-8>
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			* { box-sizing: border-box; }
+			canvas { background-color:#eeeeee; }
+			#a { display:block; }
+			#b { display:none; }
+			#c { width:1200px; height:420px; display:none; }
+			button { margin: 10px; }
+		</style>
+	</head>
+	<body>
+		<h1>WhatsApp Chat Stats</h1>
+		<canvas id="a" width="1200" height="420"></canvas>
+		<canvas id="b" width="1200" height="420"></canvas>
+		<textarea id="c"></textarea>
+		<button id="d" onclick="dt();">Input text</button>
+		<button onclick="document.getElementById('f').click();">Open file</button>
+		<button id="e" onclick="k()">Messages per day</button>
+		<input id="f" type="file" name="file" multiple="false" style="display: none;" />
+		<select name="j" id="j">
+			<option value="102" selected="selected">month, day, year</option>
+			<option value="012">day, month, year</option>
+			<option value="210">year, month, day</option>
+		</select>
+		<select name="m" id="m">
+			<option value="/" selected="selected">/</option>
+			<option value="-">-</option>
+			<option value=".">.</option>
+			<option value=" ">(space)</option>
+		</select>
+		<script>
+			let h=!1,g=!1,a=document.getElementById("a"),b=document.getElementById("b"),c=document.getElementById("c"),e=document.getElementById("e"),d=document.getElementById("d");function k(){(g=!g)?(a.style.display="none",b.style.display="block",e.innerHTML="Cumulative Frequency"):(a.style.display="block",b.style.display="none",e.innerHTML="Messages per day")}function dt(){(h=!h)?(a.style.display="none",c.style.display="block",d.innerHTML="Save"):(update(),a.style.display="block",c.style.display="none",d.innerHTML="Input text")}function update(){const e=[0,31,59,90,120,151,181,212,243,273,304,334];let t=c.value.split("\n");const n=document.getElementById("m").value,l=parseInt(document.getElementById("j").value[0]),F=parseInt(document.getElementById("j").value[1]),o=parseInt(document.getElementById("j").value[2]);let s=t[0].split(", ")[0].split(n);const r=parseInt(s[l])+e[parseInt(s[F])-1],B=parseInt(s[o]);let E={},d="",m=0;for(i=1;i<t.length;i++)if((s=t[i].split(", ")).length>1&&!((s=s[0].split(n)).length<3||isNaN(s[0])||isNaN(s[1])||isNaN(s[2]))){let n=t[i].split("- ");if(n.length<=1)continue;if(n[1].split(": ").length<=1)continue;let a=n[1].split(": ")[0];a in E||(E[a]=[]);let c=1+parseInt(s[l])+e[parseInt(s[F])-1]-r+365*(parseInt(s[o])-B);E[a].push(c),c>m&&(m=c,d=t[i].split(", ")[0])}let h=0,D=0;for(name in E)if(E.hasOwnProperty(name)){E[name].length>h&&(h=E[name].length);let e=0,t=0;for(i=0;i<E[name].length;i++)E[name][i]==t?e++:(e>D&&(D=e),e=1),t=E[name][i]}let p=a.getContext("2d"),g=b.getContext("2d");p.lineWidth=3,p.beginPath(),p.clearRect(0,0,a.width,a.height),p.font="10px Arial";const A=Math.log(h)*Math.LOG10E+1|0;let C=360*Math.pow(10,A-1)/h;for(C>100&&(C/=10),i=1;360-i*C>0;i++)p.fillText(i.toString()+"0".repeat(A-2),10,385-i*C);p.closePath(),g.lineWidth=3,g.beginPath(),g.clearRect(0,0,a.width,a.height),g.font="10px Arial";const y=Math.log(D)*Math.LOG10E+1|0;let T=360*Math.pow(10,y-1)/D;for(T>100&&(T/=10),i=1;360-i*T>0;i++)g.fillText(i.toString()+"0".repeat(y-2),10,385-i*T);g.closePath();const u=["#00FFFF","#7FFFD4","#0000FF","#8bBE2","#A52bA","#DEB887","#5F9EA0","#7FFF00","#D2691E","#FF7F50","#6495ED","#DC143C","#00FFFF","#00008B","#008B8B","#B8860B","#A9A9A9","#006400","#BDB76B","#8B008B","#556B2F","#FF8C00","#9932CC","#8B0000","#E9967A","#8FBC8F","#483D8B","#2F4F4F","#00CED1","#9400D3","#FF1493","#00BFFF","#696969","#1E90FF","#B22222","#228B22","#FF00FF","#FFD700","#DAA520","#808080","#008000","#ADFF2F","#FF69B4","#CD5C5C","#4B0082","#F0E68C","#7CFC00","#ADD8E6","#F08080","#E0FFFF","#D3D3D3","#90EE90","#FFB6C1","#FFA07A","#20B2AA","#87CEFA","#778899","#B0C4DE","#00FF00","#32CD32","#FF00FF","#800000","#66CDAA","#0000CD","#BA55D3","#9370DB","#3CB371","#7B68EE","#00FA9A","#48D1CC","#C71585","#191970","#FFDEAD","#000080","#808000","#6B8E23","#FFA500","#FF4500","#DA70D6","#EEE8AA","#98FB98","#AFEEEE","#DB7093","#FFDAB9","#CD853F","#FFC0CB","#DDA0DD","#B0E0E6","#800080","#663399","#FF0000","#BC8F8F","#4169E1","#8B4513","#FA8072","#F4A460","#2E8B57","#A0522D","#C0C0C0","#87CEEB","#6A5ACD","#708090","#00FF7F","#4682B4","#D2B48C","#008080","#D8BFD8","#FF6347","#40E0D0","#EE82EE","#F5DEB3","#FFFF00","#9ACD32"];let f=0;for(name in E)if(E.hasOwnProperty(name)){p.beginPath(),p.strokeStyle=u[f],p.moveTo(1070,45+20*f),p.lineTo(1090,45+20*f),p.fillText(name,1100,50+20*f),p.moveTo(50,380),g.beginPath(),g.strokeStyle=u[f],g.moveTo(1070,45+20*f),g.lineTo(1090,45+20*f),g.fillText(name,1100,50+20*f),g.moveTo(50,380);let e=0,t=0;for(;e<E[name].length;e++){E[name][e]-t>1&&p.lineTo(60+950*(E[name][e]-1)/m,380-360*e/h);let n=0;for(;E[name][e]==E[name][e+1];)e++,n++;p.lineTo(50+950*E[name][e]/m,380-360*e/h),g.lineTo(50+950*E[name][e]/m,380-360*n/D),n=0,t=E[name][e]}p.lineTo(1e3,380-360*e/h),p.fillText(e,1025,50+20*f),p.stroke(),p.closePath(),t!=m&&g.lineTo(1e3,380),g.fillText(e,1025,50+20*f),g.stroke(),g.closePath(),f++}p.beginPath(),p.clearRect(0,382,a.width,a.height),p.strokeStyle="#000000",p.moveTo(30,382),p.lineTo(1e3,382),p.moveTo(48,30),p.lineTo(48,380),p.fillText(t[0].split(", ")[0],20,400),p.fillText(d,970,400),p.stroke(),p.closePath(),g.beginPath(),g.clearRect(0,382,a.width,a.height),g.strokeStyle="#000000",g.moveTo(30,382),g.lineTo(1e3,382),g.moveTo(48,30),g.lineTo(48,380),g.fillText(t[0].split(", ")[0],20,400),g.fillText(d,970,400),g.stroke(),g.closePath()}document.getElementById("f").addEventListener("change",e=>{let t=new FileReader;t.onload=function(e){return function(){c.value=e.result,update()}}(t),t.readAsText(e.target.files[0])});
+		</script>
+	</body>
+</html>
